@@ -67,84 +67,11 @@ class ProductDetailScreen extends StatelessWidget {
 
           // Content Scroll
           SafeArea(
+            bottom: false,
             child: CustomScrollView(
               slivers: [
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  leading: const SizedBox.shrink(),
-                  flexibleSpace: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.5),
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              customBorder: const CircleBorder(),
-                              onTap: () => context.pop(),
-                              child: const SizedBox(
-                                width: 36, height: 36,
-                                child: Center(child: Icon(Icons.arrow_back, color: Colors.white, size: 20)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.5),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                  child: InkWell(
-                                    customBorder: const CircleBorder(),
-                                    onTap: () => context.go('/products/${product.id}/edit'),
-                                    child: const SizedBox(
-                                      width: 36, height: 36,
-                                      child: Center(child: Icon(Icons.edit, color: Colors.white, size: 20)),
-                                    ),
-                                  ),
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.5),
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                  child: InkWell(
-                                    customBorder: const CircleBorder(),
-                                    onTap: () => _confirmDelete(context, productProvider),
-                                    child: const SizedBox(
-                                      width: 36, height: 36,
-                                      child: Center(child: Icon(Icons.delete, color: Colors.redAccent, size: 20)),
-                                    ),
-                                  ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 SliverToBoxAdapter(
-                  child: SizedBox(height: MediaQuery.of(context).size.height * 0.5 - 160), // Spacing to push content down
+                  child: SizedBox(height: MediaQuery.of(context).size.height * 0.5 - 100), // Adjusted spacing
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
@@ -309,6 +236,63 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+
+          // Top Floating Navigation
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Back Button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.4),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => context.pop(),
+                      ),
+                    ),
+                    // Admin Actions
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.4),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.white, size: 20),
+                            onPressed: () => context.go('/products/${product.id}/edit'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.4),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.delete, color: Color(0xFFE60A15), size: 20),
+                            onPressed: () => _confirmDelete(context, productProvider),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
