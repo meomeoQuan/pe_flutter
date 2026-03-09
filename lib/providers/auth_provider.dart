@@ -62,6 +62,53 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  // ── Forgot Password ────────────────────────────────────────────────────────
+
+  Future<bool> checkEmailExists(String email) async {
+    try {
+      final existing = await _db.queryWhere(
+        'users',
+        where: 'email = ?',
+        whereArgs: [email],
+      );
+      return existing.isNotEmpty;
+    } catch (e) {
+      debugPrint('Check email failed: $e');
+      return false;
+    }
+  }
+
+  Future<String?> updatePassword({
+    required String email,
+    required String newPassword,
+  }) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      // Final safety check
+      final exists = await checkEmailExists(email);
+      if (!exists) {
+        return 'No account found for that email address';
+      }
+
+      // Update password hash
+      await _db.update(
+        'users',
+        {'passwordHash': _hashPassword(newPassword)},
+        where: 'email = ?',
+        whereArgs: [email],
+      );
+
+      return null; // success
+    } catch (e) {
+      return 'Password update failed: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   // ── Login ───────────────────────────────────────────────────────────
 
   Future<String?> login({

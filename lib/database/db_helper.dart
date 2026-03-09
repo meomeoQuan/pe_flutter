@@ -98,6 +98,7 @@ class DBHelper {
     return await db.query(table, where: where, whereArgs: whereArgs);
   }
 
+
   Future<int> update(
     String table,
     Map<String, dynamic> data, {

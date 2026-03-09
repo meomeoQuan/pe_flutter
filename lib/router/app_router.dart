@@ -5,6 +5,7 @@ import '../screens/account_screen.dart';
 import '../screens/add_edit_product_screen.dart';
 import '../screens/cart_screen.dart';
 import '../screens/discover_screen.dart';
+import '../screens/forgot_password_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/product_list_screen.dart';
@@ -19,7 +20,8 @@ GoRouter createRouter(AuthProvider authProvider) {
     redirect: (context, state) {
       final isLoggedIn = authProvider.isLoggedIn;
       final isAuthRoute = state.matchedLocation == '/login' ||
-          state.matchedLocation == '/register';
+          state.matchedLocation == '/register' ||
+          state.matchedLocation == '/forgot-password';
 
       if (!isLoggedIn && !isAuthRoute) {
         return '/login';
@@ -39,6 +41,11 @@ GoRouter createRouter(AuthProvider authProvider) {
         path: '/register',
         name: 'register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        name: 'forgot-password',
+        builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
         path: '/products',

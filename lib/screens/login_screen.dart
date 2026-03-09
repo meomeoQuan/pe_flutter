@@ -163,13 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.white.withValues(alpha: 0.7),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
+                           GestureDetector(
+                            onTap: () => context.push('/forgot-password'),
                             child: const Text(
                               'Forgot password?',
                               style: TextStyle(
