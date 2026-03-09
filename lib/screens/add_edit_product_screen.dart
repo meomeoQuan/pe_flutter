@@ -88,110 +88,205 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BackgroundWrapper(
-      hasAppBar: true,
-      title: isEditing ? 'Edit Product' : 'Add Product',
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: GlassContainer(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  isEditing ? 'EDIT PRODUCT DETAILS' : 'ADD NEW PRODUCT',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white.withValues(alpha: 0.6),
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                // Name
-                TextFormField(
-                  controller: _nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    prefixIcon: Icon(Icons.inventory_2_outlined),
-                  ),
-                  textInputAction: TextInputAction.next,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Designation required' : null,
-                ),
-                const SizedBox(height: 16),
-
-                // Description
-                TextFormField(
-                  controller: _descriptionController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    prefixIcon: Icon(Icons.description_outlined),
-                    alignLabelWithHint: true,
-                  ),
-                  maxLines: 4,
-                  textInputAction: TextInputAction.next,
-                  validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Parameters required'
-                      : null,
-                ),
-                const SizedBox(height: 16),
-
-                // Price
-                TextFormField(
-                  controller: _priceController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    labelText: 'Price',
-                    prefixIcon: Icon(Icons.attach_money),
-                  ),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  textInputAction: TextInputAction.next,
-                  validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Value required';
-                    final price = double.tryParse(v.trim());
-                    if (price == null || price <= 0) {
-                      return 'Enter a valid numeric value';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Image URL
-                TextFormField(
-                  controller: _imageUrlController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    labelText: 'Image URL (Optional)',
-                    prefixIcon: Icon(Icons.image_outlined),
-                  ),
-                  keyboardType: TextInputType.url,
-                  textInputAction: TextInputAction.done,
-                ),
-                const SizedBox(height: 32),
-
-                // Submit
-                FilledButton.icon(
-                  onPressed: _submit,
-                  icon: Icon(isEditing ? Icons.save : Icons.add_to_photos),
-                  label: Text(
-                    isEditing ? 'UPDATE PRODUCT' : 'ADD PRODUCT',
-                    style: const TextStyle(letterSpacing: 1.5, fontWeight: FontWeight.bold),
-                  ),
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 56),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: const Color(0xFF0B0B0B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Container(
+          margin: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.5),
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: () => context.pop(),
+              child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
             ),
           ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          // Background Glow
+          Positioned(
+            top: -150, right: -150,
+            child: Container(
+              width: 400, height: 400,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(color: const Color(0xFFE60A15).withValues(alpha: 0.15), blurRadius: 150, spreadRadius: 50),
+                ],
+              ),
+            ),
+          ),
+          
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF181111).withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withValues(alpha: 0.5), blurRadius: 20, offset: const Offset(0, 10)),
+                    ],
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          isEditing ? 'EDIT PRODUCT DETAILS' : 'ADD NEW PRODUCT',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white.withValues(alpha: 0.6),
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        
+                        // Name
+                        _buildInputField(
+                          controller: _nameController,
+                          label: 'Product Name',
+                          icon: Icons.inventory_2_outlined,
+                          validator: (v) => (v == null || v.trim().isEmpty) ? 'Product Name is required' : null,
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Description
+                        _buildInputField(
+                          controller: _descriptionController,
+                          label: 'Description',
+                          icon: Icons.description_outlined,
+                          maxLines: 4,
+                          validator: (v) => (v == null || v.trim().isEmpty) ? 'Description is required' : null,
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Price
+                        _buildInputField(
+                          controller: _priceController,
+                          label: 'Price',
+                          icon: Icons.attach_money,
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          validator: (v) {
+                            if (v == null || v.trim().isEmpty) return 'Price is required';
+                            final price = double.tryParse(v.trim());
+                            if (price == null || price <= 0) return 'Enter a valid price';
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+
+                        // Image URL
+                        _buildInputField(
+                          controller: _imageUrlController,
+                          label: 'Image URL (Optional)',
+                          icon: Icons.image_outlined,
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.done,
+                        ),
+                        const SizedBox(height: 40),
+
+                        // Submit Button
+                        Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFE60A15),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFE60A15).withValues(alpha: 0.4),
+                                      blurRadius: 20,
+                                      spreadRadius: 2,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            FilledButton.icon(
+                              onPressed: _submit,
+                              icon: Icon(isEditing ? Icons.save : Icons.add_to_photos, color: Colors.white),
+                              label: Text(
+                                isEditing ? 'UPDATE PRODUCT' : 'ADD PRODUCT',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1.5, color: Colors.white),
+                              ),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: const Color(0xFFE60A15),
+                                minimumSize: const Size(double.infinity, 56),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    int maxLines = 1,
+    TextInputType? keyboardType,
+    TextInputAction textInputAction = TextInputAction.next,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(color: Colors.white),
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
+        prefixIcon: Icon(icon, color: Colors.white.withValues(alpha: 0.4)),
+        alignLabelWithHint: maxLines > 1,
+        filled: true,
+        fillColor: Colors.black.withValues(alpha: 0.5),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFE60A15)),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.redAccent),
         ),
       ),
     );

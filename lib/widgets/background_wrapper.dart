@@ -21,10 +21,10 @@ class BackgroundWrapper extends StatelessWidget {
     final canPop = Navigator.of(context).canPop();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF141414), // Netflix Deep Black
+      backgroundColor: const Color(0xFF0B0B0B), // Cinematic Deep Black
       appBar: hasAppBar
           ? AppBar(
-              backgroundColor: const Color(0xFF141414).withValues(alpha: 0.9),
+              backgroundColor: const Color(0xFF0B0B0B).withValues(alpha: 0.9),
               surfaceTintColor: Colors.transparent,
               leading: canPop
                   ? IconButton(
@@ -50,8 +50,8 @@ class BackgroundWrapper extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xFF141414),
-                      const Color(0xFF141414).withValues(alpha: 0.0),
+                      const Color(0xFF0B0B0B),
+                      const Color(0xFF0B0B0B).withValues(alpha: 0.0),
                     ],
                   ),
                 ),
@@ -61,40 +61,80 @@ class BackgroundWrapper extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       body: Stack(
         children: [
-          // Subtle red ambient light / shadow in the background
+          // Edge glow top
           Positioned(
-            top: -150,
-            left: -150,
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 250,
             child: Container(
-              width: 300,
-              height: 300,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   colors: [
-                    const Color(0xFFE50914).withValues(alpha: 0.15),
+                    const Color(0xFFE60A15).withValues(alpha: 0.08),
                     Colors.transparent,
                   ],
-                  stops: const [0.0, 1.0],
                 ),
               ),
             ),
           ),
+          
+          // Radial glow center
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.center,
+                  colors: [
+                    const Color(0xFFE60A15).withValues(alpha: 0.15),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.7],
+                ),
+              ),
+            ),
+          ),
+
+          // Bottom left intense blur
           Positioned(
             bottom: -200,
-            right: -100,
+            left: -200,
             child: Container(
               width: 400,
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    const Color(0xFFE50914).withValues(alpha: 0.1),
-                    Colors.transparent,
-                  ],
-                  stops: const [0.0, 1.0],
-                ),
+                color: const Color(0xFFE60A15).withValues(alpha: 0.10),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFE60A15).withValues(alpha: 0.1),
+                    blurRadius: 120,
+                    spreadRadius: 20,
+                  )
+                ]
+              ),
+            ),
+          ),
+
+          // Top right intense blur
+          Positioned(
+            top: -200,
+            right: -200,
+            child: Container(
+              width: 400,
+              height: 400,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFE60A15).withValues(alpha: 0.10),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFE60A15).withValues(alpha: 0.1),
+                    blurRadius: 120,
+                    spreadRadius: 20,
+                  )
+                ]
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../screens/add_edit_product_screen.dart';
 import '../screens/cart_screen.dart';
+import '../screens/discover_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/product_list_screen.dart';
@@ -76,6 +77,11 @@ GoRouter createRouter(AuthProvider authProvider) {
         path: '/revenue',
         name: 'revenue',
         builder: (context, state) => const RevenueScreen(),
+      ),
+      GoRoute(
+        path: '/discover',
+        name: 'discover',
+        builder: (context, state) => const DiscoverScreen(),
       ),
     ],
   );

@@ -22,7 +22,7 @@ class GlassContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Cinematic Netflix style dark glass
-    final radius = borderRadius ?? BorderRadius.circular(8); // Sharper corners for modern look
+    final radius = borderRadius ?? BorderRadius.circular(16);
 
     return Container(
       margin: margin,
@@ -39,13 +39,13 @@ class GlassContainer extends StatelessWidget {
       child: ClipRRect(
         borderRadius: radius,
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+          filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
           child: Container(
             padding: padding,
             decoration: BoxDecoration(
-              color: const Color(0xFF1F1F1F).withValues(alpha: opacity), // Dark Gray
+              color: const Color(0xFF181111).withValues(alpha: 0.6), // rgba(24, 17, 17, 0.6)
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: const Color(0xFFE60A15).withValues(alpha: 0.1),
                 width: 1.0,
               ),
             ),

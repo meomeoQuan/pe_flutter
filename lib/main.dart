@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
@@ -68,14 +69,16 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
-          scaffoldBackgroundColor: const Color(0xFF141414), // Deep Black
+          scaffoldBackgroundColor: const Color(0xFF0B0B0B), // Cinematic Deep Black
           colorScheme: const ColorScheme.dark(
-            primary: Color(0xFFE50914), // Netflix Red
+            primary: Color(0xFFE60A15), // Pure glowing red
             secondary: Colors.white,
-            surface: Color(0xFF1F1F1F), // Dark Gray
+            surface: Color(0xFF181111), // Dark Graphite surface
           ),
           useMaterial3: true,
-          fontFamily: 'Roboto', // Clean modern font
+          textTheme: GoogleFonts.splineSansTextTheme(
+            ThemeData.dark().textTheme,
+          ),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -89,15 +92,15 @@ class _MyAppState extends State<MyApp> {
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: const Color(0xFF1F1F1F),
+            fillColor: const Color(0xFF181111).withValues(alpha: 0.6),
             contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -135,7 +138,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: const Color(0xFFE50914),
+            backgroundColor: const Color(0xFFE60A15),
             foregroundColor: Colors.white,
             elevation: 8,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
