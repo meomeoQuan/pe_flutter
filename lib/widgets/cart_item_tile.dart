@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
+import '../widgets/glass_container.dart';
 
 class CartItemTile extends StatelessWidget {
   final CartItem item;
@@ -11,12 +12,10 @@ class CartItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: GlassContainer(
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             // Product info
@@ -28,22 +27,23 @@ class CartItemTile extends StatelessWidget {
                     item.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                      fontSize: 16,
+                      color: Colors.white,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
                   Text(
-                    '\$${item.price.toStringAsFixed(2)} each',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                    '\$${item.price.toStringAsFixed(2)} / unit',
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    'Subtotal: \$${item.totalPrice.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.w600,
+                    'Sub: \$${item.totalPrice.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                 ],
@@ -51,39 +51,45 @@ class CartItemTile extends StatelessWidget {
             ),
 
             // Quantity controls
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.remove_circle_outline),
-                  onPressed: () {
-                    context
-                        .read<CartProvider>()
-                        .updateQuantity(item.id, item.quantity - 1);
-                  },
-                  iconSize: 28,
-                ),
-                Text(
-                  '${item.quantity}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove, color: Colors.white),
+                    onPressed: () {
+                      context
+                          .read<CartProvider>()
+                          .updateQuantity(item.id, item.quantity - 1);
+                    },
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add_circle_outline),
-                  onPressed: () {
-                    context
-                        .read<CartProvider>()
-                        .updateQuantity(item.id, item.quantity + 1);
-                  },
-                  iconSize: 28,
-                ),
-              ],
+                  Text(
+                    '${item.quantity}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Color(0xFFE50914)),
+                    onPressed: () {
+                      context
+                          .read<CartProvider>()
+                          .updateQuantity(item.id, item.quantity + 1);
+                    },
+                  ),
+                ],
+              ),
             ),
 
+            const SizedBox(width: 8),
             // Remove button
             IconButton(
-              icon: Icon(Icons.delete_outline, color: colorScheme.error),
+              icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
               onPressed: () {
                 context.read<CartProvider>().removeFromCart(item.id);
               },

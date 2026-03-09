@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../models/product.dart';
 import '../providers/product_provider.dart';
+import '../widgets/background_wrapper.dart';
+import '../widgets/glass_container.dart';
 
 class AddEditProductScreen extends StatefulWidget {
   final String? productId;
@@ -77,8 +79,8 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(isEditing ? 'Product updated' : 'Product added'),
-        backgroundColor: Colors.green,
+        content: Text(isEditing ? 'Item successfully updated.' : 'Item successfully deployed.'),
+        backgroundColor: const Color(0xFFE50914),
       ),
     );
     context.go('/products');
@@ -86,97 +88,109 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? 'Edit Product' : 'Add Product'),
-        backgroundColor: colorScheme.primaryContainer,
-        foregroundColor: colorScheme.onPrimaryContainer,
-      ),
-      body: SingleChildScrollView(
+    return BackgroundWrapper(
+      hasAppBar: true,
+      title: isEditing ? 'Edit Product' : 'Add Product',
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Name
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Product Name',
-                  prefixIcon: Icon(Icons.inventory_2_outlined),
-                  border: OutlineInputBorder(),
+        child: GlassContainer(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 8),
+                Text(
+                  isEditing ? 'EDIT PRODUCT DETAILS' : 'ADD NEW PRODUCT',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white.withValues(alpha: 0.6),
+                    letterSpacing: 2,
+                  ),
                 ),
-                textInputAction: TextInputAction.next,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Name is required' : null,
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 24),
+                // Name
+                TextFormField(
+                  controller: _nameController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Product Name',
+                    prefixIcon: Icon(Icons.inventory_2_outlined),
+                  ),
+                  textInputAction: TextInputAction.next,
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Designation required' : null,
+                ),
+                const SizedBox(height: 16),
 
-              // Description
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  prefixIcon: Icon(Icons.description_outlined),
-                  border: OutlineInputBorder(),
-                  alignLabelWithHint: true,
+                // Description
+                TextFormField(
+                  controller: _descriptionController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    prefixIcon: Icon(Icons.description_outlined),
+                    alignLabelWithHint: true,
+                  ),
+                  maxLines: 4,
+                  textInputAction: TextInputAction.next,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? 'Parameters required'
+                      : null,
                 ),
-                maxLines: 4,
-                textInputAction: TextInputAction.next,
-                validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Description is required'
-                    : null,
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Price
-              TextFormField(
-                controller: _priceController,
-                decoration: const InputDecoration(
-                  labelText: 'Price',
-                  prefixIcon: Icon(Icons.attach_money),
-                  border: OutlineInputBorder(),
+                // Price
+                TextFormField(
+                  controller: _priceController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Price',
+                    prefixIcon: Icon(Icons.attach_money),
+                  ),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  textInputAction: TextInputAction.next,
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) return 'Value required';
+                    final price = double.tryParse(v.trim());
+                    if (price == null || price <= 0) {
+                      return 'Enter a valid numeric value';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                textInputAction: TextInputAction.next,
-                validator: (v) {
-                  if (v == null || v.trim().isEmpty) return 'Price is required';
-                  final price = double.tryParse(v.trim());
-                  if (price == null || price <= 0) {
-                    return 'Enter a valid price';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Image URL
-              TextFormField(
-                controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Image URL (optional)',
-                  prefixIcon: Icon(Icons.image_outlined),
-                  border: OutlineInputBorder(),
+                // Image URL
+                TextFormField(
+                  controller: _imageUrlController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Image URL (Optional)',
+                    prefixIcon: Icon(Icons.image_outlined),
+                  ),
+                  keyboardType: TextInputType.url,
+                  textInputAction: TextInputAction.done,
                 ),
-                keyboardType: TextInputType.url,
-                textInputAction: TextInputAction.done,
-              ),
-              const SizedBox(height: 28),
+                const SizedBox(height: 32),
 
-              // Submit
-              FilledButton.icon(
-                onPressed: _submit,
-                icon: Icon(isEditing ? Icons.save : Icons.add),
-                label: Text(isEditing ? 'Update Product' : 'Add Product'),
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
+                // Submit
+                FilledButton.icon(
+                  onPressed: _submit,
+                  icon: Icon(isEditing ? Icons.save : Icons.add_to_photos),
+                  label: Text(
+                    isEditing ? 'UPDATE PRODUCT' : 'ADD PRODUCT',
+                    style: const TextStyle(letterSpacing: 1.5, fontWeight: FontWeight.bold),
+                  ),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 56),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
