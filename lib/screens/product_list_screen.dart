@@ -299,7 +299,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 children: [
                   _BottomNavItem(icon: Icons.home, label: 'Home', isActive: true),
                   _BottomNavItem(icon: Icons.explore, label: 'Discover', isActive: false, onTap: () => context.push('/discover')),
-                  _BottomNavItem(icon: Icons.favorite, label: 'Saved', isActive: false),
+                  _BottomNavItem(icon: Icons.favorite, label: 'Saved', isActive: false, onTap: () => context.push('/saved')),
                   _BottomNavItem(icon: Icons.person, label: 'Account', isActive: false),
                 ],
               ),

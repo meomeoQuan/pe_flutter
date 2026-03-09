@@ -89,9 +89,9 @@ class ProductDetailScreen extends StatelessWidget {
                             child: InkWell(
                               customBorder: const CircleBorder(),
                               onTap: () => context.pop(),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.arrow_back, color: Colors.white, size: 20),
+                              child: const SizedBox(
+                                width: 36, height: 36,
+                                child: Center(child: Icon(Icons.arrow_back, color: Colors.white, size: 20)),
                               ),
                             ),
                           ),
@@ -107,14 +107,14 @@ class ProductDetailScreen extends StatelessWidget {
                               ),
                               child: Material(
                                 color: Colors.transparent,
-                                child: InkWell(
-                                  customBorder: const CircleBorder(),
-                                  onTap: () => context.go('/products/${product.id}/edit'),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.edit, color: Colors.white, size: 20),
+                                  child: InkWell(
+                                    customBorder: const CircleBorder(),
+                                    onTap: () => context.go('/products/${product.id}/edit'),
+                                    child: const SizedBox(
+                                      width: 36, height: 36,
+                                      child: Center(child: Icon(Icons.edit, color: Colors.white, size: 20)),
+                                    ),
                                   ),
-                                ),
                               ),
                             ),
                             Container(
@@ -126,14 +126,14 @@ class ProductDetailScreen extends StatelessWidget {
                               ),
                               child: Material(
                                 color: Colors.transparent,
-                                child: InkWell(
-                                  customBorder: const CircleBorder(),
-                                  onTap: () => _confirmDelete(context, productProvider),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(Icons.delete, color: Colors.redAccent, size: 20),
+                                  child: InkWell(
+                                    customBorder: const CircleBorder(),
+                                    onTap: () => _confirmDelete(context, productProvider),
+                                    child: const SizedBox(
+                                      width: 36, height: 36,
+                                      child: Center(child: Icon(Icons.delete, color: Colors.redAccent, size: 20)),
+                                    ),
                                   ),
-                                ),
                               ),
                             ),
                           ],
@@ -246,8 +246,13 @@ class ProductDetailScreen extends StatelessWidget {
                       border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.favorite_border, color: Colors.white),
-                      onPressed: () {},
+                      icon: Icon(
+                        productProvider.isSaved(product.id) ? Icons.favorite : Icons.favorite_border,
+                        color: productProvider.isSaved(product.id) ? const Color(0xFFE60A15) : Colors.white,
+                      ),
+                      onPressed: () {
+                        productProvider.toggleSaved(product.id);
+                      },
                     ),
                   ),
                   const SizedBox(width: 16),

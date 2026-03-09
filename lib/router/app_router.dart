@@ -9,6 +9,7 @@ import '../screens/product_detail_screen.dart';
 import '../screens/product_list_screen.dart';
 import '../screens/register_screen.dart';
 import '../screens/revenue_screen.dart';
+import '../screens/saved_screen.dart';
 
 GoRouter createRouter(AuthProvider authProvider) {
   return GoRouter(
@@ -82,6 +83,11 @@ GoRouter createRouter(AuthProvider authProvider) {
         path: '/discover',
         name: 'discover',
         builder: (context, state) => const DiscoverScreen(),
+      ),
+      GoRoute(
+        path: '/saved',
+        name: 'saved',
+        builder: (context, state) => const SavedScreen(),
       ),
     ],
   );

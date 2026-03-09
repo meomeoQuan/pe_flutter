@@ -69,9 +69,9 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                           child: InkWell(
                             customBorder: const CircleBorder(),
                             onTap: () => context.pop(),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(Icons.arrow_back, color: Colors.white, size: 20),
+                            child: const SizedBox(
+                              width: 36, height: 36,
+                              child: Center(child: Icon(Icons.arrow_back, color: Colors.white, size: 20)),
                             ),
                           ),
                         ),

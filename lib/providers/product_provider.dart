@@ -10,6 +10,7 @@ class ProductProvider extends ChangeNotifier {
   String _searchQuery = '';
   bool _sortAscending = true;
   bool _isLoading = false;
+  final Set<String> _savedProductIds = {};
 
   List<Product> get products => _filteredProducts;
   bool get isLoading => _isLoading;
@@ -118,6 +119,25 @@ class ProductProvider extends ChangeNotifier {
 
   void setSortAscending(bool ascending) {
     _sortAscending = ascending;
+    notifyListeners();
+  }
+
+  // ── Wishlist / Saved ────────────────────────────────────────────────
+  
+  Set<String> get savedProductIds => _savedProductIds;
+
+  List<Product> get savedProducts {
+    return _products.where((p) => _savedProductIds.contains(p.id)).toList();
+  }
+
+  bool isSaved(String productId) => _savedProductIds.contains(productId);
+
+  void toggleSaved(String productId) {
+    if (_savedProductIds.contains(productId)) {
+      _savedProductIds.remove(productId);
+    } else {
+      _savedProductIds.add(productId);
+    }
     notifyListeners();
   }
 }

@@ -105,7 +105,10 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
             child: InkWell(
               customBorder: const CircleBorder(),
               onTap: () => context.pop(),
-              child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+              child: const SizedBox(
+                width: 36, height: 36,
+                child: Center(child: Icon(Icons.arrow_back, color: Colors.white, size: 20)),
+              ),
             ),
           ),
         ),
