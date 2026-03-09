@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/cart_item.dart';
 import '../providers/cart_provider.dart';
+import '../widgets/custom_image.dart';
 
 class CartItemTile extends StatelessWidget {
   final CartItem item;
@@ -51,13 +51,13 @@ class CartItemTile extends StatelessWidget {
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: item.imageUrl.isNotEmpty
-                      ? CachedNetworkImage(
+                      ? CustomImage(
                           imageUrl: item.imageUrl,
                           fit: BoxFit.cover,
                           placeholder: (_, _) => const Center(
                             child: CircularProgressIndicator(color: Color(0xFFE60A15)),
                           ),
-                          errorWidget: (_, _, _) => _placeholder(),
+                          fallbackWidget: _placeholder(),
                         )
                       : _placeholder(),
                 ),

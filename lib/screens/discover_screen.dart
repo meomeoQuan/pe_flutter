@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/product.dart';
 import '../providers/product_provider.dart';
+import '../widgets/custom_image.dart';
 
 class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
@@ -198,10 +199,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white.withValues(alpha: 0.05),
-                image: DecorationImage(
-                  image: NetworkImage(product.imageUrl.isNotEmpty ? product.imageUrl : 'https://via.placeholder.com/300x450'),
-                  fit: BoxFit.cover,
-                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.5),
@@ -211,7 +208,15 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                 ],
               ),
               child: Stack(
+                fit: StackFit.expand,
                 children: [
+                   ClipRRect(
+                     borderRadius: BorderRadius.circular(12),
+                     child: CustomImage(
+                       imageUrl: product.imageUrl.isNotEmpty ? product.imageUrl : 'https://via.placeholder.com/300x450',
+                       fit: BoxFit.cover,
+                     ),
+                   ),
                   // Gradient overlay on hover/always slightly visible at bottom for contrast
                   Positioned.fill(
                     child: Container(

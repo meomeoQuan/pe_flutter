@@ -1,12 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
+import '../widgets/custom_image.dart';
 import '../widgets/background_wrapper.dart';
-import '../widgets/glass_container.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final String productId;
@@ -42,9 +41,11 @@ class ProductDetailScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                product.imageUrl.isNotEmpty
-                    ? Image.network(product.imageUrl, fit: BoxFit.cover)
-                    : Container(color: const Color(0xFF181111)),
+                CustomImage(
+                  imageUrl: product.imageUrl,
+                  fit: BoxFit.cover,
+                  fallbackWidget: Container(color: const Color(0xFF181111)),
+                ),
                 // Gradient overlay
                 Container(
                   decoration: BoxDecoration(

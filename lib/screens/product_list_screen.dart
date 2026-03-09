@@ -5,9 +5,8 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
+import '../widgets/custom_image.dart';
 import '../widgets/product_card.dart';
-import '../widgets/background_wrapper.dart';
-import '../widgets/glass_container.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -116,9 +115,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             icon: const Icon(Icons.more_vert, color: Colors.white),
                             color: const Color(0xFF181111),
                             onSelected: (value) {
-                              if (value == 'revenue') context.push('/revenue');
-                              else if (value == 'admin') context.push('/products/add');
-                              else if (value == 'logout') context.read<AuthProvider>().logout();
+                              if (value == 'revenue') {
+                                context.push('/revenue');
+                              } else if (value == 'admin') {
+                                context.push('/products/add');
+                              } else if (value == 'logout') {
+                                context.read<AuthProvider>().logout();
+                              }
                             },
                             itemBuilder: (context) => [
                               const PopupMenuItem(value: 'revenue', child: ListTile(leading: Icon(Icons.bar_chart, color: Color(0xFFE60A15)), title: Text('Revenue', style: TextStyle(color: Colors.white)))),
@@ -149,9 +152,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                         SizedBox(
                                           height: MediaQuery.of(context).size.width * 0.8,
                                           width: double.infinity,
-                                          child: heroProduct.imageUrl.isNotEmpty
-                                              ? Image.network(heroProduct.imageUrl, fit: BoxFit.cover)
-                                              : Container(color: const Color(0xFF181111)),
+                                          child: CustomImage(
+                                            imageUrl: heroProduct.imageUrl,
+                                            fit: BoxFit.cover,
+                                            fallbackWidget: Container(color: const Color(0xFF181111)),
+                                          ),
                                         ),
                                         Positioned.fill(
                                           child: Container(
@@ -243,10 +248,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Expanded(
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(16),
-                                                            image: DecorationImage(image: NetworkImage(item.imageUrl.isNotEmpty ? item.imageUrl : 'https://via.placeholder.com/150'), fit: BoxFit.cover),
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.circular(16),
+                                                          child: CustomImage(
+                                                            imageUrl: item.imageUrl.isNotEmpty ? item.imageUrl : 'https://via.placeholder.com/150',
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
                                                       ),
@@ -274,7 +280,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                       children: [
                                         const Text('Trending Now', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 16),
-                                        ...trendingProducts.map((p) => ProductCard(product: p)).toList(),
+                                        ...trendingProducts.map((p) => ProductCard(product: p)),
                                       ],
                                     ),
                                   ),
@@ -300,7 +306,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   _BottomNavItem(icon: Icons.home, label: 'Home', isActive: true),
                   _BottomNavItem(icon: Icons.explore, label: 'Discover', isActive: false, onTap: () => context.push('/discover')),
                   _BottomNavItem(icon: Icons.favorite, label: 'Saved', isActive: false, onTap: () => context.push('/saved')),
-                  _BottomNavItem(icon: Icons.person, label: 'Account', isActive: false),
+                  _BottomNavItem(icon: Icons.person, label: 'Account', isActive: false, onTap: () => context.push('/account')),
                 ],
               ),
             ),

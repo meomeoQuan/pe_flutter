@@ -145,7 +145,7 @@ class CartScreen extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text('\$${(cartProvider.totalPrice * 1.08).toStringAsFixed(2)}', style: const TextStyle(color: const Color(0xFFE60A15), fontSize: 24, fontWeight: FontWeight.bold)),
+                                      Text('\$${(cartProvider.totalPrice * 1.08).toStringAsFixed(2)}', style: const TextStyle(color: Color(0xFFE60A15), fontSize: 24, fontWeight: FontWeight.bold)),
                                       Text('Including VAT', style: TextStyle(color: Colors.white.withValues(alpha: 0.4), fontSize: 10)),
                                     ],
                                   ),

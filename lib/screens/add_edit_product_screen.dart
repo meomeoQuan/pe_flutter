@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../models/product.dart';
 import '../providers/product_provider.dart';
-import '../widgets/background_wrapper.dart';
-import '../widgets/glass_container.dart';
+import '../widgets/custom_image.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddEditProductScreen extends StatefulWidget {
   final String? productId;
@@ -22,6 +22,7 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
   final _imageUrlController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   bool get isEditing => widget.productId != null;
 
@@ -197,13 +198,56 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                         const SizedBox(height: 20),
 
                         // Image URL
-                        _buildInputField(
-                          controller: _imageUrlController,
-                          label: 'Image URL (Optional)',
-                          icon: Icons.image_outlined,
-                          keyboardType: TextInputType.url,
-                          textInputAction: TextInputAction.done,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: _buildInputField(
+                                controller: _imageUrlController,
+                                label: 'Image URL or Pick Image',
+                                icon: Icons.image_outlined,
+                                keyboardType: TextInputType.url,
+                                textInputAction: TextInputAction.done,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            InkWell(
+                              onTap: () async {
+                                final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                                if (image != null) {
+                                  setState(() {
+                                    _imageUrlController.text = image.path;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 56, height: 56,
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                                ),
+                                child: const Icon(Icons.photo_library, color: Colors.white),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 16),
+                        if (_imageUrlController.text.isNotEmpty)
+                          Container(
+                            height: 150,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: CustomImage(
+                              imageUrl: _imageUrlController.text,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         const SizedBox(height: 40),
 
                         // Submit Button

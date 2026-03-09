@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import '../providers/auth_provider.dart';
+import '../screens/account_screen.dart';
 import '../screens/add_edit_product_screen.dart';
 import '../screens/cart_screen.dart';
 import '../screens/discover_screen.dart';
@@ -88,6 +89,11 @@ GoRouter createRouter(AuthProvider authProvider) {
         path: '/saved',
         name: 'saved',
         builder: (context, state) => const SavedScreen(),
+      ),
+      GoRoute(
+        path: '/account',
+        name: 'account',
+        builder: (context, state) => const AccountScreen(),
       ),
     ],
   );

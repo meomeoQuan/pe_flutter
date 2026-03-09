@@ -21,14 +21,14 @@ class DBHelper {
     // On web, just pass the filename, databaseFactoryFfiWeb handles the IndexedDB path
     if (kIsWeb) {
       return await openDatabase(
-        'pe_flutter.db',
+        'pe_flutter_v2.db',
         version: 1,
         onCreate: _onCreate,
       );
     }
 
     final dbPath = await getDatabasesPath();
-    final path = p.join(dbPath, 'pe_flutter.db');
+    final path = p.join(dbPath, 'pe_flutter_v2.db');
 
     return await openDatabase(
       path,

@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
+import '../widgets/custom_image.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -60,16 +60,14 @@ class ProductCard extends StatelessWidget {
                       height: 80,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: product.imageUrl.isNotEmpty
-                            ? CachedNetworkImage(
-                                imageUrl: product.imageUrl,
-                                fit: BoxFit.cover,
-                                placeholder: (_, _) => const Center(
-                                  child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFE60A15)),
-                                ),
-                                errorWidget: (_, _, _) => _placeholder(),
-                              )
-                            : _placeholder(),
+                        child: CustomImage(
+                          imageUrl: product.imageUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (_, _) => const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFE60A15)),
+                          ),
+                          fallbackWidget: _placeholder(),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
