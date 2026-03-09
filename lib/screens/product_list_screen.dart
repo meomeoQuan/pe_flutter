@@ -85,10 +85,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.search, color: Colors.white),
-                            onPressed: () {},
-                          ),
+
                           Stack(
                             alignment: Alignment.center,
                             children: [

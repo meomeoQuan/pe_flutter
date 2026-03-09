@@ -125,19 +125,6 @@ class AccountScreen extends StatelessWidget {
               subtitle: 'View your wishlist',
               onTap: () => context.push('/saved'),
             ),
-            const SizedBox(height: 16),
-            _buildListTile(
-              context,
-              icon: Icons.settings_outlined,
-              title: 'App Settings',
-              subtitle: 'Theme and notifications',
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Settings coming soon!'), backgroundColor: Color(0xFF181111)),
-                );
-              },
-            ),
-            
             const SizedBox(height: 48),
 
             // Logout Button
