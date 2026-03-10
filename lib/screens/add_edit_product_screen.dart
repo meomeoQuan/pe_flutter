@@ -1,11 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../models/product.dart';
 import '../providers/product_provider.dart';
 import '../widgets/custom_image.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddEditProductScreen extends StatefulWidget {
   final String? productId;
@@ -22,7 +23,6 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
   final _imageUrlController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
 
   bool get isEditing => widget.productId != null;
 
@@ -213,11 +213,24 @@ class _AddEditProductScreenState extends State<AddEditProductScreen> {
                             const SizedBox(width: 8),
                             InkWell(
                               onTap: () async {
-                                final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-                                if (image != null) {
-                                  setState(() {
-                                    _imageUrlController.text = image.path;
-                                  });
+                                final result = await FilePicker.platform.pickFiles(
+                                  type: FileType.any, // Use Any to ensure Drive/Local providers show up
+                                  withData: true, 
+                                );
+                                
+                                if (result != null && result.files.isNotEmpty) {
+                                  final file = result.files.first;
+                                  final bytes = file.bytes;
+                                  
+                                  if (bytes != null) {
+                                    final extension = file.extension?.toLowerCase() ?? 'jpg';
+                                    final mimeType = (extension == 'png') ? 'image/png' : 'image/jpeg';
+                                    final base64Image = 'data:$mimeType;base64,${base64Encode(bytes)}';
+                                    
+                                    setState(() {
+                                      _imageUrlController.text = base64Image;
+                                    });
+                                  }
                                 }
                               },
                               child: Container(

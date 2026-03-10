@@ -46,6 +46,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _authProvider = AuthProvider();
     _router = createRouter(_authProvider);
+    
+    // Attempt auto-login in the background
+    _authProvider.tryAutoLogin();
   }
 
   @override

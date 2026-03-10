@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/background_wrapper.dart';
 import '../widgets/glass_container.dart';
@@ -18,6 +19,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _rememberMe = false;
   bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRememberedData();
+  }
+
+  Future<void> _loadRememberedData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('remembered_email');
+    final password = prefs.getString('remembered_password');
+    if (email != null && password != null) {
+      if (mounted) {
+        setState(() {
+          _emailController.text = email;
+          _passwordController.text = password;
+          _rememberMe = true;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -140,7 +162,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
-                          hintText: 'name@company.com',
                           prefixIcon: Icon(Icons.mail_outline),
                         ),
                         validator: (value) {
@@ -182,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: _obscurePassword,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          hintText: '••••••••',
                           prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -274,56 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                       
-                      // Footer OR
-                      const SizedBox(height: 40),
-                      Row(
-                        children: [
-                          Expanded(child: Divider(color: Colors.white.withValues(alpha: 0.1))),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'Or continue with',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white.withValues(alpha: 0.5),
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Divider(color: Colors.white.withValues(alpha: 0.1))),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.g_mobiledata, size: 24, color: Colors.white),
-                              label: const Text('Google', style: TextStyle(color: Colors.white)),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-                                backgroundColor: const Color(0xFF0B0B0B).withValues(alpha: 0.3),
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: const Icon(Icons.terminal, size: 20, color: Colors.white),
-                              label: const Text('SSO', style: TextStyle(color: Colors.white)),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
-                                backgroundColor: const Color(0xFF0B0B0B).withValues(alpha: 0.3),
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+
                     ],
                   ),
                 ),

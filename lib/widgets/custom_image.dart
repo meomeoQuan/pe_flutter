@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +33,19 @@ class CustomImage extends StatelessWidget {
         placeholder: placeholder,
         errorWidget: errorWidget ?? (context, url, error) => fallbackWidget ?? const Icon(Icons.error),
       );
+    }
+
+    if (imageUrl.startsWith('data:image')) {
+      try {
+        final base64String = imageUrl.split(',').last;
+        return Image.memory(
+          base64Decode(base64String),
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) => fallbackWidget ?? const Icon(Icons.error),
+        );
+      } catch (e) {
+        return fallbackWidget ?? const Icon(Icons.error);
+      }
     }
 
     if (!kIsWeb) {
